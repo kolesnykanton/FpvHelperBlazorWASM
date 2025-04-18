@@ -3,7 +3,7 @@
 @inject HttpClient Http
 @using FpvHelperBlazorWASM.Models
 @using System.Text
-
+@using FpvHelperBlazorWASM.Serialization
 
 <h3>Windy Map + Point Forecast</h3>
 
@@ -28,62 +28,30 @@
     }
 
     private async Task LoadPointForecast(double lat, double lon)
-    {
-        var req = new PointForecastRequest
-            {
-                lat = lat,
-                lon = lon,
-                model = "gfs",
-                parameters = new[] { "temp", "wind", "windGust", "precip" },
-                levels = new[] { "surface" },
-                key = "fMmoIbvpuPknYgXpUrZkjy7uhPauLBPA"  // Point Forecast API key
-            };
+{
+  var req = new PointForecastRequest {
+    lat = lat,
+    lon = lon,
+    model = "gfs",
+    parameters = new[] { "temp","wind","windGust","precip" },
+    levels     = new[] { "surface" },
+    key        = "<PointForecastKey>"
+  };
 
-        // Серіалізуємо вручну
-        var jsonBody = JsonSerializer.Serialize(req);
-        // Формуємо контент
-        using var content = new StringContent(
-            jsonBody, Encoding.UTF8, "application/json");
+  // СЕРІАЛІЗУЄМО через source‑gen контекст
+  var json = JsonSerializer.Serialize(
+    req,
+    WindyJsonContext.Default.PointForecastRequest);
 
-        // Робимо POST
-        using var resp = await Http.PostAsync(
-            "https://api.windy.com/api/point-forecast/v2", content);
-        resp.EnsureSuccessStatusCode();
+  using var content = new StringContent(json, Encoding.UTF8, "application/json");
+  using var resp    = await Http.PostAsync(
+    "https://api.windy.com/api/point-forecast/v2", content);
+  resp.EnsureSuccessStatusCode();
 
-        // Парсимо JSON-відповідь
-        using var stream = await resp.Content.ReadAsStreamAsync();
-        using var doc    = await JsonDocument.ParseAsync(stream);
-        var root        = doc.RootElement;
-
-        // timestamps
-        var ts = root.GetProperty("ts")
-                     .EnumerateArray().Select(e => e.GetInt64()).ToArray();
-
-        // helper to read arrays
-        double[] Read(string name) =>
-          root.GetProperty(name)
-              .EnumerateArray().Select(e => e.GetDouble()).ToArray();
-
-        var temp = Read("temp-surface");
-        var u = Read("wind_u-surface");
-        var v = Read("wind_v-surface");
-
-        // compute speed & direction
-        var speed = u.Zip(v, (ui, vi) => Math.Sqrt(ui * ui + vi * vi)).ToArray();
-        var dir = u.Zip(v, (ui, vi) =>
-                       (Math.Atan2(-ui, -vi) * 180 / Math.PI + 360) % 360).ToArray();
-
-        var gust = Read("gust-surface");
-        var precip = Read("past3hprecip-surface"); // ← виправлено!
-
-        forecast = new PointForecastResponse
-            {
-                Ts = ts,
-                TempSurface = temp,
-                WindSpeed = speed,
-                WindDir = dir,
-                GustSurface = gust,
-                PrecipSurface = precip
-            };
-    }
+  // ДЕСЕРІАЛІЗУЄМО через той самий контекст
+  await using var stream = await resp.Content.ReadAsStreamAsync();
+  forecast = await JsonSerializer.DeserializeAsync<PointForecastResponse>(
+    stream,
+    WindyJsonContext.Default.PointForecastResponse);
+}
 }
