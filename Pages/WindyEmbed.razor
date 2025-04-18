@@ -1,0 +1,79 @@
+﻿@page "/windy"
+@inject IJSRuntime JS
+@inject HttpClient Http
+@using FpvHelperBlazorWASM.Models
+
+
+<h3>Windy Map + Point Forecast</h3>
+
+<div class="d-flex flex-wrap">
+    <div id="windy" style="height:600px; flex:1 1 60%; min-width:300px;"></div>
+
+    <div class="weather-box p-3 flex:1 1 30%; min-width:200px;">
+        <ForecastCards Forecast="forecast" />
+    </div>
+</div>
+
+@code {
+    private PointForecastResponse? forecast;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        await JS.InvokeVoidAsync("initializeWindyMap");
+        var coords = await JS.InvokeAsync<GeoCoords>("getUserLocation");
+        await LoadPointForecast(coords.Lat, coords.Lon);
+        StateHasChanged();
+    }
+
+    private async Task LoadPointForecast(double lat, double lon)
+    {
+        var req = new PointForecastRequest
+            {
+                lat = lat,
+                lon = lon,
+                model = "gfs",
+                parameters = new[] { "temp", "wind", "windGust", "precip" },
+                levels = new[] { "surface" },
+                key = "fMmoIbvpuPknYgXpUrZkjy7uhPauLBPA"  // Point Forecast API key
+            };
+
+        using var resp = await Http.PostAsJsonAsync(
+          "https://api.windy.com/api/point-forecast/v2", req);
+        resp.EnsureSuccessStatusCode();
+
+        using var doc = await resp.Content.ReadFromJsonAsync<JsonDocument>();
+        var root = doc!.RootElement;
+
+        // timestamps
+        var ts = root.GetProperty("ts")
+                     .EnumerateArray().Select(e => e.GetInt64()).ToArray();
+
+        // helper to read arrays
+        double[] Read(string name) =>
+          root.GetProperty(name)
+              .EnumerateArray().Select(e => e.GetDouble()).ToArray();
+
+        var temp = Read("temp-surface");
+        var u = Read("wind_u-surface");
+        var v = Read("wind_v-surface");
+
+        // compute speed & direction
+        var speed = u.Zip(v, (ui, vi) => Math.Sqrt(ui * ui + vi * vi)).ToArray();
+        var dir = u.Zip(v, (ui, vi) =>
+                       (Math.Atan2(-ui, -vi) * 180 / Math.PI + 360) % 360).ToArray();
+
+        var gust = Read("gust-surface");
+        var precip = Read("past3hprecip-surface"); // ← виправлено!
+
+        forecast = new PointForecastResponse
+            {
+                Ts = ts,
+                TempSurface = temp,
+                WindSpeed = speed,
+                WindDir = dir,
+                GustSurface = gust,
+                PrecipSurface = precip
+            };
+    }
+}

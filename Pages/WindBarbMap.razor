@@ -1,0 +1,13 @@
+﻿@page "/windbarb"
+@inject IJSRuntime JS
+
+<h3>WindBarb Map (оновлення кожні 5 сек)</h3>
+<div id="windBarbMap" style="height:600px;"></div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await JS.InvokeVoidAsync("initWindBarbMap");
+    }
+}
