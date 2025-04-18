@@ -33,11 +33,11 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-Cvekp77EwVdDC6dXnH+5obWMQHakX6NT5Xkp4SAQFvw=",
+      "hash": "sha256-5tYypzxXS0gs5dRsbZfaIf3QFfTfva2O3k2b7KOUQKo=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-RAHZAAx5beeXQ0XIEzSOZqgC\/mo720E8Xc3+4VERCxU=",
+      "hash": "sha256-F2yCQPMH3asJgY1t3ChzqdDMmdhU0fpFzRknaEiL7tk=",
       "url": "_framework\/FpvHelperBlazorWASM.wasm"
     },
     {
@@ -101,7 +101,7 @@
       "url": "_framework\/System.Collections.Concurrent.wasm"
     },
     {
-      "hash": "sha256-msvPQIlRrP2gHymLepTQCtbHrOXpk5DDSWV73spKFdc=",
+      "hash": "sha256-18V27h1sfBN3WUvPetXRoRuHRAH2GIwyTdR4jsO4dO4=",
       "url": "_framework\/System.Collections.wasm"
     },
     {
@@ -121,7 +121,7 @@
       "url": "_framework\/System.IO.Pipelines.wasm"
     },
     {
-      "hash": "sha256-lL6JbagGURBAgvUEwGcPzIYWw7stMFDAYccAG2lGkQ8=",
+      "hash": "sha256-54OA2+q7CZt\/c9HWcKaDoxe+j5xkbYaRI1wkW+khrMc=",
       "url": "_framework\/System.Linq.wasm"
     },
     {
@@ -141,7 +141,7 @@
       "url": "_framework\/System.Net.Primitives.wasm"
     },
     {
-      "hash": "sha256-OLoxqGbcGtCBU51YI264j0kE5A9gD+3mAnexGzysKkY=",
+      "hash": "sha256-\/2\/qa5VIli8KTSon50r5\/4MrgTGAZz+nm0axbRMRpi8=",
       "url": "_framework\/System.Private.CoreLib.wasm"
     },
     {
@@ -153,7 +153,7 @@
       "url": "_framework\/System.Runtime.InteropServices.JavaScript.wasm"
     },
     {
-      "hash": "sha256-B3swHcDPfu6C4xABrMvUYEvkU46cOx2D7BchjL6QWKI=",
+      "hash": "sha256-Jq3NuyyrULw9OPDG4XJB3VPQFjKQLBJc\/50I8HnRQUQ=",
       "url": "_framework\/System.Runtime.wasm"
     },
     {
@@ -173,7 +173,7 @@
       "url": "FpvHelperBlazorWASM.styles.css"
     },
     {
-      "hash": "sha256-9vvp25QiYtahxd4VSmePq\/BRefboDX84SPbqLvVtbTQ=",
+      "hash": "sha256-9wVY129Pef\/gU2ZuphDiFNq7JWNm3iuGP9zGfUV7OgU=",
       "url": "css\/app.css"
     },
     {
@@ -221,5 +221,5 @@
       "url": "sample-data\/weather.json"
     }
   ],
-  "version": "FOlA3tYj"
+  "version": "saBlUG2z"
 };
