@@ -12,23 +12,9 @@
 <h3>Windy Map + Point Forecast</h3>
 
 <div class="d-flex flex-wrap">
-    <!-- Карта -->
     <div id="windy" style="height:600px; flex:1 1 60%; min-width:300px;"></div>
-
-    <!-- Forecast-картки -->
-    <div class="weather-box p-3 flex:1 1 30%; min-width:200px;">
-        @if (forecast is null)
-        {
-            <p>⏳ Завантаження Point Forecast…</p>
-        }
-        else
-        {
-            <p><b>Час:</b> @DateTimeOffset.FromUnixTimeMilliseconds(forecast.Ts[0]).ToLocalTime()</p>
-            <p><b>Темп.:</b> @forecast.TempSurface[0] °C</p>
-            <p><b>Вітер:</b> @Math.Round(forecast.WindSpeed[0], 1) м/с (@forecast.WindDir[0]°)</p>
-            <p><b>Пориви:</b> @forecast.GustSurface[0] м/с</p>
-            <p><b>Опади (3 год):</b> @forecast.PrecipSurface[0] мм</p>
-        }
+    <div class="weather-box p-3 flex:1 1 35%; min-width:200px;">
+        <ForecastCards Forecast="forecast" />
     </div>
 </div>
 
@@ -39,15 +25,9 @@
     {
         if (!firstRender) return;
 
-        // Ініціалізуємо карту Windy
         await JS.InvokeVoidAsync("initializeWindyMap");
-
-        // Отримуємо поточні координати
         var coords = await JS.InvokeAsync<GeoCoords>("getUserLocation");
-
-        // Завантажуємо Point Forecast
         await LoadPointForecast(coords.Lat, coords.Lon);
-
         StateHasChanged();
     }
 

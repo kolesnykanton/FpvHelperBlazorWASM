@@ -115,8 +115,8 @@ code {
 }
 
 .forecast-card {
-    width: 4.5rem;
-    background: #fff;
+    width: 5rem;
+    background: #f0f8ff;
     border: 1px solid #ddd;
     border-radius: .25rem;
 }
@@ -136,7 +136,7 @@ code {
 }
 
 .forecast-temp {
-    font-size: .85rem;
+    font-size: .9rem;
     font-weight: 500;
 }
 
