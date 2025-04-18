@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <base href="/FpvHelperBlazorWASM" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FpvHelperBlazorWASM</title>
+
+    <!-- === Ваші CSS: Bootstrap, app.css, іконки   === -->
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link href="FpvHelperBlazorWASM.styles.css" rel="stylesheet" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+
+    <!-- === Windy SDK CSS === -->
+    <link rel="stylesheet"
+          href="https://api.windy.com/assets/map-forecast/lib.css" />
+</head>
+<body>
+    <!-- === Корінь Blazor та UI помилки === -->
+    <div id="app">Завантаження…</div>
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <!-- === Geolocation helper (getUserLocation) === -->
+    <script src="js/location.js"></script>
+
+    <!-- === Windy JS SDK (ініціалізує Leaflet 1.4 під капотом) === -->
+    <script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
+
+    <!-- === Ваш скрипт для ініціалізації карти Windy === -->
+    <script src="js/windy-init.js"></script>
+
+    <!-- === Blazor WebAssembly runtime === -->
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>
