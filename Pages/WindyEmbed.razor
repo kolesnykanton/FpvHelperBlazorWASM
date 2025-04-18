@@ -2,6 +2,7 @@
 @inject IJSRuntime JS
 @inject HttpClient Http
 @using FpvHelperBlazorWASM.Models
+@using System.Text
 
 
 <h3>Windy Map + Point Forecast</h3>
@@ -38,12 +39,21 @@
                 key = "fMmoIbvpuPknYgXpUrZkjy7uhPauLBPA"  // Point Forecast API key
             };
 
-        using var resp = await Http.PostAsJsonAsync(
-          "https://api.windy.com/api/point-forecast/v2", req);
+        // Серіалізуємо вручну
+        var jsonBody = JsonSerializer.Serialize(req);
+        // Формуємо контент
+        using var content = new StringContent(
+            jsonBody, Encoding.UTF8, "application/json");
+
+        // Робимо POST
+        using var resp = await Http.PostAsync(
+            "https://api.windy.com/api/point-forecast/v2", content);
         resp.EnsureSuccessStatusCode();
 
-        using var doc = await resp.Content.ReadFromJsonAsync<JsonDocument>();
-        var root = doc!.RootElement;
+        // Парсимо JSON-відповідь
+        using var stream = await resp.Content.ReadAsStreamAsync();
+        using var doc    = await JsonDocument.ParseAsync(stream);
+        var root        = doc.RootElement;
 
         // timestamps
         var ts = root.GetProperty("ts")
