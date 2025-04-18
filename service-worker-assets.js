@@ -33,11 +33,11 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-\/HURCHgvBV7R7rdkAElDaWPhFzDoI8lR619J2ZhoW3w=",
+      "hash": "sha256-Cvekp77EwVdDC6dXnH+5obWMQHakX6NT5Xkp4SAQFvw=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-LLFH4Iuk9BTYdjKg6zTCRVxEgvBfuD92P8d4+rsTSNw=",
+      "hash": "sha256-RAHZAAx5beeXQ0XIEzSOZqgC\/mo720E8Xc3+4VERCxU=",
       "url": "_framework\/FpvHelperBlazorWASM.wasm"
     },
     {
@@ -109,7 +109,7 @@
       "url": "_framework\/System.ComponentModel.wasm"
     },
     {
-      "hash": "sha256-djjCXyqmsQScVmGoPD4X+occHi+CzdMnadc4nxQ2tvI=",
+      "hash": "sha256-paHTbyoDsp5mfZ8DlVcYR+EKYMljQnK37dkbpx7Rehg=",
       "url": "_framework\/System.Console.wasm"
     },
     {
@@ -121,7 +121,7 @@
       "url": "_framework\/System.IO.Pipelines.wasm"
     },
     {
-      "hash": "sha256-U4cXmyktpffJaeLHopcl8TxePo5ri7\/4y\/oJu6ySOdI=",
+      "hash": "sha256-lL6JbagGURBAgvUEwGcPzIYWw7stMFDAYccAG2lGkQ8=",
       "url": "_framework\/System.Linq.wasm"
     },
     {
@@ -133,7 +133,7 @@
       "url": "_framework\/System.Net.Http.Json.wasm"
     },
     {
-      "hash": "sha256-WbZtMzHWJsOwpCVuVA+MpS8IQyuSMObQhZlGU6XoZmU=",
+      "hash": "sha256-\/mdu1KhF4ylU0Ev+9OYY6c9v0uImnYQhrVMzl3sTlZs=",
       "url": "_framework\/System.Net.Http.wasm"
     },
     {
@@ -141,7 +141,7 @@
       "url": "_framework\/System.Net.Primitives.wasm"
     },
     {
-      "hash": "sha256-aoOs00gftt5ivI1DbuTYjySRJDbZOAWq1AUJa5438nM=",
+      "hash": "sha256-OLoxqGbcGtCBU51YI264j0kE5A9gD+3mAnexGzysKkY=",
       "url": "_framework\/System.Private.CoreLib.wasm"
     },
     {
@@ -153,7 +153,7 @@
       "url": "_framework\/System.Runtime.InteropServices.JavaScript.wasm"
     },
     {
-      "hash": "sha256-+Q412hkF\/rDIYJ\/qXENCMYL04ZDzeL8Jsf3VL1kvYeM=",
+      "hash": "sha256-B3swHcDPfu6C4xABrMvUYEvkU46cOx2D7BchjL6QWKI=",
       "url": "_framework\/System.Runtime.wasm"
     },
     {
@@ -161,7 +161,7 @@
       "url": "_framework\/System.Text.Encodings.Web.wasm"
     },
     {
-      "hash": "sha256-nA\/Pg7mbFYR2\/zkDoS12MF73J5maekVnA7gaEkEgBgY=",
+      "hash": "sha256-IWIfO12eE1LHRytI4poDzpwyRbQ5uKgCfetNWfGqGuY=",
       "url": "_framework\/System.Text.Json.wasm"
     },
     {
@@ -221,5 +221,5 @@
       "url": "sample-data\/weather.json"
     }
   ],
-  "version": "VgYHgAxr"
+  "version": "FOlA3tYj"
 };
