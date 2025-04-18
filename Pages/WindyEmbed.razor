@@ -1,17 +1,34 @@
 ﻿@page "/windy"
+@using System
+@using System.Linq
+@using System.Net.Http
+@using System.Text
+@using System.Text.Json
+@using System.Globalization
+@using FpvHelperBlazorWASM.Models
 @inject IJSRuntime JS
 @inject HttpClient Http
-@using FpvHelperBlazorWASM.Models
-@using System.Text
-@using FpvHelperBlazorWASM.Serialization
 
 <h3>Windy Map + Point Forecast</h3>
 
 <div class="d-flex flex-wrap">
+    <!-- Карта -->
     <div id="windy" style="height:600px; flex:1 1 60%; min-width:300px;"></div>
 
+    <!-- Forecast-картки -->
     <div class="weather-box p-3 flex:1 1 30%; min-width:200px;">
-        <ForecastCards Forecast="forecast" />
+        @if (forecast is null)
+        {
+            <p>⏳ Завантаження Point Forecast…</p>
+        }
+        else
+        {
+            <p><b>Час:</b> @DateTimeOffset.FromUnixTimeMilliseconds(forecast.Ts[0]).ToLocalTime()</p>
+            <p><b>Темп.:</b> @forecast.TempSurface[0] °C</p>
+            <p><b>Вітер:</b> @Math.Round(forecast.WindSpeed[0], 1) м/с (@forecast.WindDir[0]°)</p>
+            <p><b>Пориви:</b> @forecast.GustSurface[0] м/с</p>
+            <p><b>Опади (3 год):</b> @forecast.PrecipSurface[0] мм</p>
+        }
     </div>
 </div>
 
@@ -21,37 +38,81 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender) return;
+
+        // Ініціалізуємо карту Windy
         await JS.InvokeVoidAsync("initializeWindyMap");
+
+        // Отримуємо поточні координати
         var coords = await JS.InvokeAsync<GeoCoords>("getUserLocation");
+
+        // Завантажуємо Point Forecast
         await LoadPointForecast(coords.Lat, coords.Lon);
+
         StateHasChanged();
     }
 
     private async Task LoadPointForecast(double lat, double lon)
-{
-  var req = new PointForecastRequest {
-    lat = lat,
-    lon = lon,
-    model = "gfs",
-    parameters = new[] { "temp","wind","windGust","precip" },
-    levels     = new[] { "surface" },
-    key        = "<PointForecastKey>"
-  };
+    {
+        // 1) Формуємо JSON‑payload вручну
+        var jsonBody = $"{{" +
+            $"\"lat\":{lat.ToString(CultureInfo.InvariantCulture)}," +
+            $"\"lon\":{lon.ToString(CultureInfo.InvariantCulture)}," +
+            $"\"model\":\"gfs\"," +
+            $"\"parameters\":[\"temp\",\"wind\",\"windGust\",\"precip\"]," +
+            $"\"levels\":[\"surface\"]," +
+            $"\"key\":\"fMmoIbvpuPknYgXpUrZkjy7uhPauLBPA\"" +
+        $"}}";
 
-  // СЕРІАЛІЗУЄМО через source‑gen контекст
-  var json = JsonSerializer.Serialize(
-    req,
-    WindyJsonContext.Default.PointForecastRequest);
+        // 2) Відправляємо POST
+        using var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+        using var resp = await Http.PostAsync(
+            "https://api.windy.com/api/point-forecast/v2",
+            content);
 
-  using var content = new StringContent(json, Encoding.UTF8, "application/json");
-  using var resp    = await Http.PostAsync(
-    "https://api.windy.com/api/point-forecast/v2", content);
-  resp.EnsureSuccessStatusCode();
+        // 3) Діагностичний лог (за бажанням)
+        var respText = await resp.Content.ReadAsStringAsync();
+        Console.WriteLine($"PointForecast ({(int)resp.StatusCode}): {respText}");
+        resp.EnsureSuccessStatusCode();
 
-  // ДЕСЕРІАЛІЗУЄМО через той самий контекст
-  await using var stream = await resp.Content.ReadAsStreamAsync();
-  forecast = await JsonSerializer.DeserializeAsync<PointForecastResponse>(
-    stream,
-    WindyJsonContext.Default.PointForecastResponse);
-}
+        // 4) Парсимо відповідь через JsonDocument
+        using var doc = JsonDocument.Parse(respText);
+        var root = doc.RootElement;
+
+        // timestamps
+        var ts = root.GetProperty("ts")
+                     .EnumerateArray()
+                     .Select(e => e.GetInt64())
+                     .ToArray();
+
+        // Хелпер для читання масивів double
+        double[] Read(string name) =>
+            root.GetProperty(name)
+                .EnumerateArray()
+                .Select(e => e.GetDouble())
+                .ToArray();
+
+        // У/В вітру → швидкість та напрям
+        var u = Read("wind_u-surface");
+        var v = Read("wind_v-surface");
+        var speed = u.Zip(v, (ui, vi) => Math.Sqrt(ui * ui + vi * vi)).ToArray();
+        var dir = u.Zip(v, (ui, vi) =>
+                            (Math.Atan2(-ui, -vi) * 180 / Math.PI + 360) % 360
+                         ).ToArray();
+
+        // Інші масиви
+        var temp = Read("temp-surface");
+        var gust = Read("gust-surface");
+        var precip = Read("past3hprecip-surface");
+
+        // 5) Заповнюємо модель
+        forecast = new PointForecastResponse
+            {
+                Ts = ts,
+                TempSurface = temp,
+                WindSpeed = speed,
+                WindDir = dir,
+                GustSurface = gust,
+                PrecipSurface = precip
+            };
+    }
 }
