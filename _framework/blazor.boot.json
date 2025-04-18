@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "FpvHelperBlazorWASM",
   "resources": {
-    "hash": "sha256-h8OzIi87jgEs8nO/IWyExXxJyd+mICIbtKH6R5a+l/I=",
+    "hash": "sha256-0H/GcHKwdXOKce0K4d6ujC1yXL28hyQ/PHKq9YtBeag=",
     "jsModuleNative": {
       "dotnet.native.8.0.15.l5bze06whq.js": "sha256-ftpNqtARtVNE8ku5eB/jXoklb41UQ+EutUHfwmbNTBY="
     },
@@ -17,7 +17,7 @@
       "icudt_no_CJK.dat": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs="
     },
     "assembly": {
-      "FpvHelperBlazorWASM.wasm": "sha256-freSAVHWb1CMSMHdc4H7Nvz2URtl6yDbypGh3RpApG4=",
+      "FpvHelperBlazorWASM.wasm": "sha256-kSfGLBPiJlsNR0RNrnGzHUg0FkJWeT7/eF31MiI4Rp0=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-sGfBx7gX3Y72t5jhV8J3xl8QEIScsdS6nvzoPnK5P+8=",
       "Microsoft.AspNetCore.Components.Web.wasm": "sha256-15eJk7hQqDP0RaB/4vn7V/w/N5xRWwHc5CPlB37gPGc=",
       "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-RUa63YNCpm0U3Yq5BOp9KGTld1IzXNslLACro7BK7z8=",
