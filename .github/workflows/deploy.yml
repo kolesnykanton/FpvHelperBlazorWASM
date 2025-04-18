@@ -26,11 +26,12 @@ jobs:
       - name: Publish Blazor WASM
         run: dotnet publish FpvHelperBlazorWASM.csproj -c Release -o publish
 
-      # Деплоїм в gh-pages з вмістом publish/wwwroot
+      - name: Prepare SPA fallback
+        run: |
+          cp publish/wwwroot/index.html publish/wwwroot/404.html
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./publish/wwwroot
-          # optional: if you want a custom domain, uncomment:
-          # cname: 'www.yourcustomdomain.com'
+          publish_dir: ./publish/wwwroot      
