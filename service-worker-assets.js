@@ -33,11 +33,11 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-Dm8ZcF0FDSGZVhBjbMh5gJoD2SNl1QqsVd9aTO8+kck=",
+      "hash": "sha256-LNNGrXjR6MITRLIGsZDtn9HCZwGl8W6v1OokqBvypKI=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-6z5UEbhw8dhrWNH+WT\/3pslAtn0pTemQauOycuBS\/2w=",
+      "hash": "sha256-CCD7D3ONyPmhUG8EL3u7TX17Mll+ytP1ZrdisC5oCUA=",
       "url": "_framework\/FpvHelperBlazorWASM.wasm"
     },
     {
@@ -197,7 +197,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-z0WBn5a3IeJRiQzH3UcBxkeBHfPxD3IdpSRouGII\/iQ=",
+      "hash": "sha256-ORy0aIEJq3ct+F1vGbg+vsYtonwuJfcZ7ItIT+LHb+0=",
       "url": "index.html"
     },
     {
@@ -221,5 +221,5 @@
       "url": "sample-data\/weather.json"
     }
   ],
-  "version": "+q5qTcQF"
+  "version": "NQjrhCgj"
 };
